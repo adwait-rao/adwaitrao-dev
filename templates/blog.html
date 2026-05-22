@@ -1,0 +1,31 @@
+{{define "title"}}{{.Title}}{{end}} {{define "content"}}
+<article class="space-y-8">
+    <header class="space-y-3">
+        <a
+            href="/"
+            class="inline-flex items-center text-xs font-heading font-semibold text-zinc-500 hover:text-indigo-400 transition-colors"
+        >
+            ← Return to Dashboard
+        </a>
+        <h1
+            class="text-3xl sm:text-4xl font-heading font-extrabold text-white tracking-tight pt-2"
+        >
+            {{.Title}}
+        </h1>
+        <div class="flex items-center gap-3 text-xs font-mono text-zinc-500">
+            <time>{{.Date}}</time>
+            <span>•</span>
+            <span class="text-zinc-400">{{.Description}}</span>
+        </div>
+    </header>
+
+    <hr class="border-zinc-800" />
+
+    <!-- The class prose-custom connects directly back to our typography smoothing rules -->
+    <div
+        class="prose-custom text-zinc-300 text-base space-y-6 leading-relaxed max-w-none"
+    >
+        {{.Content}}
+    </div>
+</article>
+{{end}}

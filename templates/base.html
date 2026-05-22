@@ -1,0 +1,553 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{template "title" .}}</title>
+
+        <!-- Google Fonts: Complete Weight and Style Variants for DM Sans & Lora -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Tailwind Play CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            heading: ['"DM Sans"', "sans-serif"],
+                            body: ['"Lora"', "serif"],
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <!-- UI Overlay Styles & Markdown Target Formatting (Prose-Custom) -->
+        <style>
+            /* --- True Stacked Progressive Blur (Jonothan's Method) --- */
+
+            /*
+             * Container for each edge blur stack.
+             * Fixed to viewport edges, precise 140px height.
+             * pointer-events: none lets clicks pass through to content.
+             */
+            .blur-edge {
+                position: fixed;
+                left: 0;
+                width: 100%;
+                height: 140px;
+                z-index: 40;
+                pointer-events: none;
+            }
+            .blur-edge-top {
+                top: 0;
+            }
+            .blur-edge-bottom {
+                bottom: 0;
+            }
+
+            /*
+             * Following the article's robust implementation:
+             * Each layer spans the FULL height of the container (inset: 0).
+             * We use 8 layers with exponentially decreasing blur values.
+             * The masks overlap in carefully calculated 12.5% increments
+             * to create a perfectly smooth, artifact-free transition without muddy compounding.
+             * Note: rgba(0,0,0,0) is used instead of 'transparent' to prevent Safari fringing bugs.
+             */
+            .blur-layer {
+                position: absolute;
+                inset: 0;
+            }
+
+            /* Blur intensity scale */
+            .blur-layer:nth-child(1) {
+                backdrop-filter: blur(64px);
+                -webkit-backdrop-filter: blur(64px);
+            }
+            .blur-layer:nth-child(2) {
+                backdrop-filter: blur(32px);
+                -webkit-backdrop-filter: blur(32px);
+            }
+            .blur-layer:nth-child(3) {
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .blur-layer:nth-child(4) {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            .blur-layer:nth-child(5) {
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+            }
+            .blur-layer:nth-child(6) {
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
+            }
+            .blur-layer:nth-child(7) {
+                backdrop-filter: blur(1px);
+                -webkit-backdrop-filter: blur(1px);
+            }
+            .blur-layer:nth-child(8) {
+                backdrop-filter: blur(0.5px);
+                -webkit-backdrop-filter: blur(0.5px);
+            }
+
+            /* Top Edge Masks (blurriest at top, fading out downwards) */
+            .blur-edge-top .blur-layer:nth-child(1) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(2) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(3) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(4) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(5) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(6) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(7) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(8) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+            }
+
+            /* Bottom Edge Masks (blurriest at bottom, fading out upwards) */
+            .blur-edge-bottom .blur-layer:nth-child(1) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(2) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(3) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(4) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(5) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(6) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(7) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(8) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+            }
+
+            /* --- Beautiful Typography Formatting for Compiled Markdown --- */
+            .prose-custom p {
+                font-family: "Lora", serif;
+                color: #d4d4d8; /* zinc-300 */
+                font-size: 1.05rem;
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Headings */
+            .prose-custom h1,
+            .prose-custom h2,
+            .prose-custom h3,
+            .prose-custom h4 {
+                font-family: "DM Sans", sans-serif;
+                font-weight: 700;
+                color: #ffffff;
+                letter-spacing: -0.02em;
+            }
+            .prose-custom h1 {
+                font-size: 2.25rem;
+                margin-top: 2.5rem;
+                margin-bottom: 1.25rem;
+            }
+            .prose-custom h2 {
+                font-size: 1.75rem;
+                margin-top: 2.25rem;
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #27272a;
+                padding-bottom: 0.5rem;
+            }
+            .prose-custom h3 {
+                font-size: 1.35rem;
+                margin-top: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            /* Blockquotes */
+            .prose-custom blockquote {
+                border-left: 3px solid #6366f1; /* Indigo-500 */
+                padding-left: 1.25rem;
+                margin: 1.75rem 0;
+                color: #a1a1aa; /* zinc-400 */
+                font-style: italic;
+            }
+
+            /* Lists */
+            .prose-custom ul {
+                list-style-type: disc;
+                padding-left: 1.5rem;
+                margin-bottom: 1.5rem;
+                color: #d4d4d8;
+            }
+            .prose-custom ol {
+                list-style-type: decimal;
+                padding-left: 1.5rem;
+                margin-bottom: 1.5rem;
+                color: #d4d4d8;
+            }
+            .prose-custom li {
+                margin-bottom: 0.5rem;
+                line-height: 1.7;
+            }
+
+            /* --- code blocks formatting --- */
+            .prose-custom pre {
+                background-color: rgba(
+                    15,
+                    15,
+                    15,
+                    0.75
+                ); /* Deep dark background */
+                border: 1px solid rgba(63, 63, 70, 0.4); /* Zinc border */
+                border-radius: 0.75rem;
+                padding: 1.25rem;
+                margin: 1.75rem 0;
+                overflow-x: auto;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Monospace font styling for pre block code structures */
+            .prose-custom pre code {
+                display: block;
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                font-family:
+                    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
+                font-size: 0.875rem; /* text-sm */
+                line-height: 1.7;
+                color: #e4e4e7; /* zinc-200 */
+                word-break: normal;
+                white-space: pre;
+            }
+
+            /* Inline code elements (surrounded by single backticks `like this`) */
+            .prose-custom code {
+                font-family:
+                    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
+                font-size: 0.875rem;
+                color: #f4f4f5; /* zinc-100 */
+                background-color: rgba(
+                    39,
+                    39,
+                    42,
+                    0.6
+                ); /* zinc-800/60 background bubble */
+                padding: 0.2rem 0.4rem;
+                border-radius: 0.375rem;
+                border: 1px solid rgba(63, 63, 70, 0.5);
+            }
+        </style>
+        <base target="_blank" />
+    </head>
+    <body
+        class="h-full text-slate-200 antialiased font-body selection:bg-indigo-500/30 selection:text-indigo-200"
+    >
+        <!-- Midnight Mist Background System Container (Fixed height to viewport) -->
+        <div
+            class="fixed inset-0 w-full h-full bg-black z-0 pointer-events-none"
+            style="
+                background-image:
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(70, 85, 110, 0.45) 0%,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(99, 102, 241, 0.35) 0%,
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(181, 184, 208, 0.15) 0%,
+                        transparent 80%
+                    );
+            "
+        ></div>
+
+        <!-- Scrollable Content Wrapper -->
+        <div class="relative min-h-screen flex flex-col z-10">
+            <!-- Top Edge Progressive Blur -->
+            <div class="blur-edge blur-edge-top">
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+            </div>
+
+            <!-- Bottom Edge Progressive Blur -->
+            <div class="blur-edge blur-edge-bottom">
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+            </div>
+
+            <!-- Simple, Clean Text Links Top Navigation Menu -->
+            <header
+                class="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-6"
+            >
+                <nav class="flex items-center gap-6">
+                    <a
+                        href="/"
+                        class="text-sm font-heading font-medium text-zinc-400 hover:text-white hover:underline decoration-zinc-500 underline-offset-4 transition-all duration-200"
+                    >
+                        Home
+                    </a>
+                    <a
+                        href="/"
+                        class="text-sm font-heading font-medium text-zinc-400 hover:text-white hover:underline decoration-zinc-500 underline-offset-4 transition-all duration-200"
+                    >
+                        Posts
+                    </a>
+                </nav>
+            </header>
+
+            <!-- Dynamic Main Core Target View Content Layer -->
+            <main
+                class="flex-grow max-w-2xl w-full mx-auto px-6 pt-32 pb-36 relative z-10"
+            >
+                {{template "content" .}}
+            </main>
+        </div>
+    </body>
+</html>
+{{end}}

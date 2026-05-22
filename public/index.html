@@ -1,0 +1,639 @@
+
+<!doctype html>
+<html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Workspace // Home</title>
+
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+
+        
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            heading: ['"DM Sans"', "sans-serif"],
+                            body: ['"Lora"', "serif"],
+                        },
+                    },
+                },
+            };
+        </script>
+
+        
+        <style>
+             
+
+             
+            .blur-edge {
+                position: fixed;
+                left: 0;
+                width: 100%;
+                height: 140px;
+                z-index: 40;
+                pointer-events: none;
+            }
+            .blur-edge-top {
+                top: 0;
+            }
+            .blur-edge-bottom {
+                bottom: 0;
+            }
+
+             
+            .blur-layer {
+                position: absolute;
+                inset: 0;
+            }
+
+             
+            .blur-layer:nth-child(1) {
+                backdrop-filter: blur(64px);
+                -webkit-backdrop-filter: blur(64px);
+            }
+            .blur-layer:nth-child(2) {
+                backdrop-filter: blur(32px);
+                -webkit-backdrop-filter: blur(32px);
+            }
+            .blur-layer:nth-child(3) {
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .blur-layer:nth-child(4) {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            .blur-layer:nth-child(5) {
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+            }
+            .blur-layer:nth-child(6) {
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
+            }
+            .blur-layer:nth-child(7) {
+                backdrop-filter: blur(1px);
+                -webkit-backdrop-filter: blur(1px);
+            }
+            .blur-layer:nth-child(8) {
+                backdrop-filter: blur(0.5px);
+                -webkit-backdrop-filter: blur(0.5px);
+            }
+
+             
+            .blur-edge-top .blur-layer:nth-child(1) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(2) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(3) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(4) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(5) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(6) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(7) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+            }
+            .blur-edge-top .blur-layer:nth-child(8) {
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+                mask-image: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+            }
+
+             
+            .blur-edge-bottom .blur-layer:nth-child(1) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 0) 25%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(2) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 0) 37.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(3) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 12.5%,
+                    rgba(0, 0, 0, 1) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 0) 50%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(4) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 25%,
+                    rgba(0, 0, 0, 1) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 62.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(5) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 37.5%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 0) 75%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(6) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 50%,
+                    rgba(0, 0, 0, 1) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 0) 87.5%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(7) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 62.5%,
+                    rgba(0, 0, 0, 1) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+            }
+            .blur-edge-bottom .blur-layer:nth-child(8) {
+                -webkit-mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+                mask-image: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0) 75%,
+                    rgba(0, 0, 0, 1) 87.5%,
+                    rgba(0, 0, 0, 1) 100%
+                );
+            }
+
+             
+            .prose-custom p {
+                font-family: "Lora", serif;
+                color: #d4d4d8;  
+                font-size: 1.05rem;
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+            }
+
+             
+            .prose-custom h1,
+            .prose-custom h2,
+            .prose-custom h3,
+            .prose-custom h4 {
+                font-family: "DM Sans", sans-serif;
+                font-weight: 700;
+                color: #ffffff;
+                letter-spacing: -0.02em;
+            }
+            .prose-custom h1 {
+                font-size: 2.25rem;
+                margin-top: 2.5rem;
+                margin-bottom: 1.25rem;
+            }
+            .prose-custom h2 {
+                font-size: 1.75rem;
+                margin-top: 2.25rem;
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #27272a;
+                padding-bottom: 0.5rem;
+            }
+            .prose-custom h3 {
+                font-size: 1.35rem;
+                margin-top: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+             
+            .prose-custom blockquote {
+                border-left: 3px solid #6366f1;  
+                padding-left: 1.25rem;
+                margin: 1.75rem 0;
+                color: #a1a1aa;  
+                font-style: italic;
+            }
+
+             
+            .prose-custom ul {
+                list-style-type: disc;
+                padding-left: 1.5rem;
+                margin-bottom: 1.5rem;
+                color: #d4d4d8;
+            }
+            .prose-custom ol {
+                list-style-type: decimal;
+                padding-left: 1.5rem;
+                margin-bottom: 1.5rem;
+                color: #d4d4d8;
+            }
+            .prose-custom li {
+                margin-bottom: 0.5rem;
+                line-height: 1.7;
+            }
+
+             
+            .prose-custom pre {
+                background-color: rgba(
+                    15,
+                    15,
+                    15,
+                    0.75
+                );  
+                border: 1px solid rgba(63, 63, 70, 0.4);  
+                border-radius: 0.75rem;
+                padding: 1.25rem;
+                margin: 1.75rem 0;
+                overflow-x: auto;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            }
+
+             
+            .prose-custom pre code {
+                display: block;
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                font-family:
+                    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
+                font-size: 0.875rem;  
+                line-height: 1.7;
+                color: #e4e4e7;  
+                word-break: normal;
+                white-space: pre;
+            }
+
+             
+            .prose-custom code {
+                font-family:
+                    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
+                font-size: 0.875rem;
+                color: #f4f4f5;  
+                background-color: rgba(
+                    39,
+                    39,
+                    42,
+                    0.6
+                );  
+                padding: 0.2rem 0.4rem;
+                border-radius: 0.375rem;
+                border: 1px solid rgba(63, 63, 70, 0.5);
+            }
+        </style>
+        <base target="_blank" />
+    </head>
+    <body
+        class="h-full text-slate-200 antialiased font-body selection:bg-indigo-500/30 selection:text-indigo-200"
+    >
+        
+        <div
+            class="fixed inset-0 w-full h-full bg-black z-0 pointer-events-none"
+            style="
+                background-image:
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(70, 85, 110, 0.45) 0%,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(99, 102, 241, 0.35) 0%,
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        circle at 50% 100%,
+                        rgba(181, 184, 208, 0.15) 0%,
+                        transparent 80%
+                    );
+            "
+        ></div>
+
+        
+        <div class="relative min-h-screen flex flex-col z-10">
+            
+            <div class="blur-edge blur-edge-top">
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+            </div>
+
+            
+            <div class="blur-edge blur-edge-bottom">
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+                <div class="blur-layer"></div>
+            </div>
+
+            
+            <header
+                class="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-6"
+            >
+                <nav class="flex items-center gap-6">
+                    <a
+                        href="/"
+                        class="text-sm font-heading font-medium text-zinc-400 hover:text-white hover:underline decoration-zinc-500 underline-offset-4 transition-all duration-200"
+                    >
+                        Home
+                    </a>
+                    <a
+                        href="/"
+                        class="text-sm font-heading font-medium text-zinc-400 hover:text-white hover:underline decoration-zinc-500 underline-offset-4 transition-all duration-200"
+                    >
+                        Posts
+                    </a>
+                </nav>
+            </header>
+
+            
+            <main
+                class="flex-grow max-w-2xl w-full mx-auto px-6 pt-32 pb-36 relative z-10"
+            >
+                
+<div class="space-y-16">
+    
+    <header class="space-y-3">
+        <h1
+            class="text-3xl font-heading font-extrabold tracking-tight text-white sm:text-4xl"
+        >
+            Adwait Rao
+        </h1>
+        <p class="text-base text-zinc-400 leading-relaxed font-body max-w-xl">
+            Junior Software Engineer, Currently learning Golang with backend
+            from first principles.
+        </p>
+    </header>
+
+    
+    <section class="space-y-6">
+        <div class="border-b border-zinc-800 pb-3">
+            <h2 class="text-xl font-heading font-semibold text-white">Posts</h2>
+        </div>
+
+        
+        <div class="space-y-2">
+            
+            
+            <article
+                class="group relative py-5 border-b border-zinc-800/50 hover:bg-zinc-900/40 rounded-xl px-4 -mx-4 transition-colors duration-200"
+            >
+                <div class="flex flex-col space-y-1.5">
+                    
+                    <time class="text-sm font-heading text-zinc-500">
+                        2026-05-21
+                    </time>
+
+                    
+                    <h3
+                        class="text-lg font-heading font-semibold text-zinc-200 group-hover:text-white transition-colors"
+                    >
+                        <a
+                            href="/blog/go-internals.html"
+                            class="focus:outline-none"
+                        >
+                            <span
+                                class="absolute inset-0 rounded-xl"
+                                aria-hidden="true"
+                            ></span>
+                            Under the Hood: Deep Dive Into Go Runtime Internals
+                        </a>
+                    </h3>
+
+                    
+                    <p
+                        class="text-base text-zinc-400 font-body leading-relaxed line-clamp-2 pt-1"
+                    >
+                        An extensive engineering exploration into Goroutine scheduling, channels mechanics, and advanced memory management paradigms within the Go runtime.
+                    </p>
+                </div>
+            </article>
+            
+            
+            <article
+                class="group relative py-5 border-b border-zinc-800/50 hover:bg-zinc-900/40 rounded-xl px-4 -mx-4 transition-colors duration-200"
+            >
+                <div class="flex flex-col space-y-1.5">
+                    
+                    <time class="text-sm font-heading text-zinc-500">
+                        2026-05-21
+                    </time>
+
+                    
+                    <h3
+                        class="text-lg font-heading font-semibold text-zinc-200 group-hover:text-white transition-colors"
+                    >
+                        <a
+                            href="/blog/learning-go.html"
+                            class="focus:outline-none"
+                        >
+                            <span
+                                class="absolute inset-0 rounded-xl"
+                                aria-hidden="true"
+                            ></span>
+                            Learning Go Through Practical Building
+                        </a>
+                    </h3>
+
+                    
+                    <p
+                        class="text-base text-zinc-400 font-body leading-relaxed line-clamp-2 pt-1"
+                    >
+                        My journey building a custom static site generator using Golang&#39;s standard library.
+                    </p>
+                </div>
+            </article>
+            
+        </div>
+        
+    </section>
+</div>
+
+            </main>
+        </div>
+    </body>
+</html>

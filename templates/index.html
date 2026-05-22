@@ -1,0 +1,74 @@
+{{define "title"}}Workspace // Home{{end}} {{define "content"}}
+<div class="space-y-16">
+    <!-- Simple, Clean Profile Bio Header Block -->
+    <header class="space-y-3">
+        <h1
+            class="text-3xl font-heading font-extrabold tracking-tight text-white sm:text-4xl"
+        >
+            Adwait Rao
+        </h1>
+        <p class="text-base text-zinc-400 leading-relaxed font-body max-w-xl">
+            Junior Software Engineer, Currently learning Golang with backend
+            from first principles.
+        </p>
+    </header>
+
+    <!-- Public Blog Post Output Directory Stream -->
+    <section class="space-y-6">
+        <div class="border-b border-zinc-800 pb-3">
+            <h2 class="text-xl font-heading font-semibold text-white">Posts</h2>
+        </div>
+
+        {{if .}}
+        <div class="space-y-2">
+            {{range .}}
+            <!-- Clean, minimalist list-item design (no heavy borders or boxes) -->
+            <article
+                class="group relative py-5 border-b border-zinc-800/50 hover:bg-zinc-900/40 rounded-xl px-4 -mx-4 transition-colors duration-200"
+            >
+                <div class="flex flex-col space-y-1.5">
+                    <!-- Simplified Metadata Row -->
+                    <time class="text-sm font-heading text-zinc-500">
+                        {{.Date}}
+                    </time>
+
+                    <!-- Elegant Title Element -->
+                    <h3
+                        class="text-lg font-heading font-semibold text-zinc-200 group-hover:text-white transition-colors"
+                    >
+                        <a
+                            href="/blog/{{.Slug}}.html"
+                            class="focus:outline-none"
+                        >
+                            <span
+                                class="absolute inset-0 rounded-xl"
+                                aria-hidden="true"
+                            ></span>
+                            {{.Title}}
+                        </a>
+                    </h3>
+
+                    <!-- Article Content Blurb Summary -->
+                    <p
+                        class="text-base text-zinc-400 font-body leading-relaxed line-clamp-2 pt-1"
+                    >
+                        {{.Description}}
+                    </p>
+                </div>
+            </article>
+            {{end}}
+        </div>
+        {{else}}
+        <!-- Zero State Null Indicator Display fallback -->
+        <div
+            class="text-center py-12 border border-dashed border-zinc-900 rounded-2xl bg-zinc-900/10"
+        >
+            <p class="text-sm text-zinc-500 italic font-body">
+                No static public markdown documents compiled inside
+                /content/blog directory.
+            </p>
+        </div>
+        {{end}}
+    </section>
+</div>
+{{end}}
